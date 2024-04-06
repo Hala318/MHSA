@@ -11,10 +11,66 @@ from tqdm import tqdm
 
 from typing import Union, Optional
 import argparse
-
+from PIL import Image
 rng = np.random.default_rng(42)
 
+#code alaa
+def _img_corrupted(path):
+    try:
+        with open(path, 'rb') as f:
+            with Image.open(f) as img:
+                #return img.convert('RGB')
+                return img.convert('L')
+    except:
+        all_parts = path.split("/")
+        img_p = all_parts[-1]
+        img_num = int(img_p.replace('img_', '').replace('.png', ''))
+        while img_num >= 0:
+            try:
+                path = "/".join(all_parts[:-1]) + f"/img_{img_num-1}.png"
+                with open(path, 'rb') as f:
+                    with Image.open(f) as img:
+                        #return img.convert('RGB')
+                        return img.convert('L')
+            except:
+                img_num -= 1
+                continue
 
+    all_parts = path.split("/")
+    img_p = all_parts[-1]
+    img_num = int(img_p.replace('img_', '').replace('.png', ''))
+    
+    while img_num <= 10000:
+        try:
+            path = "/".join(all_parts[:-1]) + f"/img_{img_num+1}.png"
+            with open(path, 'rb') as f:
+                with Image.open(f) as img:
+                    #return img.convert('RGB')
+                    return img.convert('L')
+        except:
+            img_num += 1
+            continue
+   
+
+    all_parts = path.split("/")
+    img_p = all_parts[-1]
+    img_num = int(img_p.replace('img_', '').replace('.png', ''))
+    while img_num <= 10000:
+        try:
+            path = "/".join(all_parts[:-1]) + f"/img_{img_num+1}.png"
+            with open(path, 'rb') as f:
+                with Image.open(f) as img:
+                    #return img.convert('RGB')
+                    return img.convert('L')
+        except:
+            img_num += 1
+            continue
+        with open(path, 'rb') as f:
+            with Image.open(f) as img:
+                #return img.convert('RGB')
+                return img.convert('L')
+   
+    
 def _get_img_id(img_path: str) -> int:
     img_name = os.path.basename(img_path)  # "./img_0.png" -> "img_0.png"
     img_name = img_name.split(".")[0]  # "img_0.png" -> "img_0"
