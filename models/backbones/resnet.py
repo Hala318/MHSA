@@ -11,6 +11,7 @@ from ..utils import _log_api_usage_once
 model_urls = {
     "r3d": "https://download.pytorch.org/models/r3d_18-b3b3357e.pth",
     "r(2+1)d": "https://download.pytorch.org/models/r2plus1d_18-91a641e6.pth"
+    "MobileNet": "https://download.pytorch.org/models/mobilenet_v2-b0353104.pth"
 }
 
 
@@ -294,7 +295,7 @@ def r3d_18(pretrained: bool = True, in_channels: int = 1, **kwargs: Any) -> Vide
         **kwargs,
     )
     if pretrained:
-        state_dict = load_state_dict_from_url(model_urls["r3d"])
+        state_dict = load_state_dict_from_url(model_urls["MobileNet"])
         state_dict = _modify_weights(state_dict, in_channels)
         model.load_state_dict(state_dict, strict=True)
 
