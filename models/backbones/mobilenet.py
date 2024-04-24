@@ -72,6 +72,24 @@ class MobileNet(nn.Module):
 
         return x, normed_x
 
+def mobilenet(pretrained: bool = False, in_channels: int = 1, **kwargs: Any) -> MobileNet:
+    model = MobileNet(
+        block=Block,
+        conv_makers=[Conv2Plus1D] * 4,
+        layers=[2, 2, 2, 2],
+        stem=BasicStem,
+        in_channels= in_channels,
+        width_mult= 2.0,
+        **kwargs,
+    )
+    if pretrained:
+        state_dict = load_state_dict_from_url(model_urls["MobileNet"])
+        state_dict = _modify_weights(state_dict, in_channels)
+        model.load_state_dict(state_dict, strict=True)
+
+    return model
+
+
 # class ProjectionHead(nn.Module):
 #     def __init__(self, output_dim):
 #         super(ProjectionHead, self).__init__()
