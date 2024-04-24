@@ -63,64 +63,64 @@ class MobileNet(nn.Module):
 
         self.conv_head = nn.Conv3d(last_channel, 512, kernel_size=1, bias=False)  # in order to encode the image to vector with the same size to the resnet 18
 
-    def forward(self, x):
-        x = self.features(x)
-        x = self.conv_head(x)
-        x = F.avg_pool3d(x, x.data.size()[-3:])
-        x = x.view(x.size(0), -1)
-        normed_x = F.normalize(x, p=2, dim=1)
+    # def forward(self, x):
+    #     x = self.features(x)
+    #     x = self.conv_head(x)
+    #     x = F.avg_pool3d(x, x.data.size()[-3:])
+    #     x = x.view(x.size(0), -1)
+    #     normed_x = F.normalize(x, p=2, dim=1)
 
-        return x, normed_x
+    #     return x, normed_x
 
-class ProjectionHead(nn.Module):
-    def __init__(self, output_dim):
-        super(ProjectionHead, self).__init__()
-        self.hidden = nn.Linear(512, 256)
-        self.relu = nn.ReLU(inplace=True)
-        self.out = nn.Linear(256, output_dim)
-        for m in self.modules():
-            if isinstance(m, nn.Linear):
-                m.weight = nn.init.kaiming_normal_(m.weight, mode='fan_out')
-                m.bias.data.fill_(0.01)
+# class ProjectionHead(nn.Module):
+#     def __init__(self, output_dim):
+#         super(ProjectionHead, self).__init__()
+#         self.hidden = nn.Linear(512, 256)
+#         self.relu = nn.ReLU(inplace=True)
+#         self.out = nn.Linear(256, output_dim)
+#         for m in self.modules():
+#             if isinstance(m, nn.Linear):
+#                 m.weight = nn.init.kaiming_normal_(m.weight, mode='fan_out')
+#                 m.bias.data.fill_(0.01)
 
-    def forward(self, x):
-        x = self.hidden(x)
-        x = self.relu(x)
-        x = self.out(x)
-        x = F.normalize(x, p=2, dim=1)
+#     def forward(self, x):
+#         x = self.hidden(x)
+#         x = self.relu(x)
+#         x = self.out(x)
+#         x = F.normalize(x, p=2, dim=1)
 
-        return x
-
-
-
-def get_fine_tuning_parameters(model, ft_portion):
-    if ft_portion == "complete":
-        return model.parameters()
-
-    elif ft_portion == "last_layer":
-        ft_module_names = []
-        ft_module_names.append('classifier')
-
-        parameters = []
-        for k, v in model.named_parameters():
-            for ft_module in ft_module_names:
-                if ft_module in k:
-                    parameters.append({'params': v})
-                    break
-            else:
-                parameters.append({'params': v, 'lr': 0.0})
-        return parameters
-
-    else:
-        raise ValueError("Unsupported ft_portion: 'complete' or 'last_layer' expected")
+#         return x
 
 
-def get_model(**kwargs):
-    """
-    Returns the model.
-    """
-    model = MobileNet(**kwargs)
-    return model
+
+# def get_fine_tuning_parameters(model, ft_portion):
+#     if ft_portion == "complete":
+#         return model.parameters()
+
+#     elif ft_portion == "last_layer":
+#         ft_module_names = []
+#         ft_module_names.append('classifier')
+
+#         parameters = []
+#         for k, v in model.named_parameters():
+#             for ft_module in ft_module_names:
+#                 if ft_module in k:
+#                     parameters.append({'params': v})
+#                     break
+#             else:
+#                 parameters.append({'params': v, 'lr': 0.0})
+#         return parameters
+
+#     else:
+#         raise ValueError("Unsupported ft_portion: 'complete' or 'last_layer' expected")
+
+
+# def get_model(**kwargs):
+#     """
+#     Returns the model.
+#     """
+#     model = MobileNet(**kwargs)
+#     return model
 
 
 
