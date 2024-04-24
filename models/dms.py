@@ -6,7 +6,7 @@ from typing import List, Optional, Dict, Union
 from .backbones import r3d_18, r2plus1d_18
 from . import fusion
 from .utils import _init_params
-
+from .backbones import mobilenet
 
 class SMSV(nn.Module):
     def __init__(
