@@ -12,8 +12,8 @@ class SMSV(nn.Module):
     def __init__(
         self,
         sources: List[str],
-        backbone: str = "r3d_18",
-        pretrained: bool = True,
+        backbone: str = "mobilenet",
+        pretrained: bool = False,
         return_features: bool = True,
     ) -> None:
         super().__init__()
@@ -22,7 +22,7 @@ class SMSV(nn.Module):
         self.source = sources[0]
 
         assert backbone in ["r3d_18", "r2plus1d_18"]
-        backbone = r3d_18 if backbone == "r3d_18" else r2plus1d_18
+        backbone = mobilenet if backbone == "mobilenet" else r2plus1d_18
         backbone = backbone(pretrained=pretrained, in_channels=1)
 
         self.stem = backbone.stem
