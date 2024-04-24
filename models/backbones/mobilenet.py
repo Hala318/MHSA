@@ -63,14 +63,14 @@ class MobileNet(nn.Module):
 
         self.conv_head = nn.Conv3d(last_channel, 512, kernel_size=1, bias=False)  # in order to encode the image to vector with the same size to the resnet 18
 
-    # def forward(self, x):
-    #     x = self.features(x)
-    #     x = self.conv_head(x)
-    #     x = F.avg_pool3d(x, x.data.size()[-3:])
-    #     x = x.view(x.size(0), -1)
-    #     normed_x = F.normalize(x, p=2, dim=1)
+    def forward(self, x):
+        x = self.features(x)
+        x = self.conv_head(x)
+        x = F.avg_pool3d(x, x.data.size()[-3:])
+        x = x.view(x.size(0), -1)
+        normed_x = F.normalize(x, p=2, dim=1)
 
-    #     return x, normed_x
+        return x, normed_x
 
 # class ProjectionHead(nn.Module):
 #     def __init__(self, output_dim):
