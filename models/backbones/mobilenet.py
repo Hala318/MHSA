@@ -72,7 +72,7 @@ class MobileNet(nn.Module):
 
         return x, normed_x
 
-def mobileNet(pretrained: bool = False, in_channels: int = 1, **kwargs: Any) -> MobileNet:
+def mobileNet(pretrained: bool = False, in_channels: int = 1, **kwargs: any) -> MobileNet:
     model = MobileNet(
         in_channels= in_channels,
         width_mult= 2.0,
