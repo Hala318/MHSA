@@ -74,10 +74,6 @@ class MobileNet(nn.Module):
 
 def mobilenet(pretrained: bool = False, in_channels: int = 1, **kwargs: Any) -> MobileNet:
     model = MobileNet(
-        block=Block,
-        conv_makers=[Conv2Plus1D] * 4,
-        layers=[2, 2, 2, 2],
-        stem=BasicStem,
         in_channels= in_channels,
         width_mult= 2.0,
         **kwargs,
