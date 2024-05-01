@@ -23,7 +23,7 @@ class SMSV(nn.Module):
 
         assert backbone in ["r3d_18", "r2plus1d_18"]
         backbone = r3d_18 if backbone == "r3d_18" else r2plus1d_18
-        backbone = backbone(pretrained=pretrained, in_channels=1)
+        backbone = backbone(pretrained=False, in_channels=1)
 
         self.stem = backbone.stem
         self.layer1 = backbone.layer1
