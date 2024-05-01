@@ -70,18 +70,17 @@ class MobileNet(nn.Module):
         x = x.view(x.size(0), -1)
         normed_x = F.normalize(x, p=2, dim=1)
 
-        return x, normed_x
+        return normed_x
 
 def mobileNet(pretrained: bool = False, in_channels: int = 1, **kwargs: any) -> MobileNet:
     model = MobileNet(
-        in_channels= in_channels,
         width_mult= 2.0,
         **kwargs,
     )
-    if pretrained:
-        state_dict = load_state_dict_from_url(model_urls["MobileNet"])
-        state_dict = _modify_weights(state_dict, in_channels)
-        model.load_state_dict(state_dict, strict=True)
+    # if pretrained:
+    #     state_dict = load_state_dict_from_url(model_urls["MobileNet"])
+    #     state_dict = _modify_weights(state_dict, in_channels)
+    #     model.load_state_dict(state_dict, strict=True)
 
     return model
 
