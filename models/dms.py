@@ -23,14 +23,12 @@ class SMSV(nn.Module):
 
         # assert backbone in ["r3d_18", "r2plus1d_18"]
         backbone = mobileNet
-        backbone = backbone(pretrained=pretrained, in_channels=1)
-
+        self.backbone = backbone(pretrained=False, in_channels=1)
         # self.stem = backbone.stem
         # self.layer1 = backbone.layer1
         # self.layer2 = backbone.layer2
         # self.layer3 = backbone.layer3
         # self.layer4 = backbone.layer4
-
         self.return_features = return_features
         if not self.return_features:
             self.avg_pool = nn.AdaptiveAvgPool3d(1)
@@ -44,17 +42,21 @@ class SMSV(nn.Module):
             x = x[self.source]
 
         assert len(x.shape) == 5  # bs, c, t, h, w
-
+        print("INSIDE")
+        x=self.backbone(x)
+        print(x.shape)
         # x = self.stem(x)
         # x = self.layer1(x)
         # x = self.layer2(x)
         # x = self.layer3(x)
         # x = self.layer4(x)
 
-        if not self.return_features:
-            x = self.avg_pool(x)
-            x = self.flatten(x)
-            x = F.normalize(x, p=2, dim=1)
+        # if not self.return_features:
+        #     print("HERE 111111111111111")
+        #     x = self.avg_pool(x)
+        #     print("HERE 2222222222222222")
+        #     x = self.flatten(x)
+        #     x = F.normalize(x, p=2, dim=1)
 
         return x
 
