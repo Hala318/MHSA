@@ -10,9 +10,9 @@ from ..utils import _log_api_usage_once
 
 model_urls = {
     "r3d": "https://download.pytorch.org/models/r3d_18-b3b3357e.pth",
-    "r(2+1)d": "https://download.pytorch.org/models/r2plus1d_18-91a641e6.pth"
-    "MobileNet": "https://download.pytorch.org/models/mobilenet_v2-b0353104.pth"
-     "swintiny": "https://download.pytorch.org/models/swin3d_t-7615ae03.pth"
+    "r(2+1)d": "https://download.pytorch.org/models/r2plus1d_18-91a641e6.pth",
+    "MobileNet": "https://download.pytorch.org/models/mobilenet_v2-b0353104.pth",
+     "swintiny": "https://download.pytorch.org/models/swin3d_t-7615ae03.pth",
 }
 
 
