@@ -25,7 +25,7 @@ feature_extractor = TimesformerFeatureExtractor(backbone)
 # Save the modified model without the classification head
 torch.save(feature_extractor.state_dict(), "timesformer_feature_extractor.pth")
 
-def timesFormer(pretrained: bool = False, in_channels: int = 1, **kwargs: any) -> MobileNet:
+def timesFormer(pretrained: bool = False, in_channels: int = 1, **kwargs: any) -> TimesformerFeatureExtractor:
     model = feature_extractor(
         **kwargs,
     )
