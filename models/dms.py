@@ -6,11 +6,7 @@ from typing import List, Optional, Dict, Union
 # from .backbones import r3d_18, r2plus1d_18
 from . import fusion
 from .utils import _init_params
-from .backbones import mobileNet
-from .backbones import timesFormer, Processor
-import torch
-from transformers import AutoImageProcessor, TimesformerForVideoClassification
-from torch import nn
+from .backbones import timesFormer
 
 class SMSV(nn.Module):
     def __init__(
@@ -27,12 +23,7 @@ class SMSV(nn.Module):
 
         # assert backbone in ["r3d_18", "r2plus1d_18"]
         backbone = timesFormer
-        print("HENAAAAAA")
-        model = TimesformerForVideoClassification.from_pretrained("facebook/timesformer-base-finetuned-k600")
-
-        # Access the backbone of the model
-        self.backbone = model.timesformer
-        
+        self.backbone = backbone(pretrained=False)
         # self.stem = backbone.stem
         # self.layer1 = backbone.layer1
         # self.layer2 = backbone.layer2
@@ -51,10 +42,26 @@ class SMSV(nn.Module):
             x = x[self.source]
 
         assert len(x.shape) == 5  # bs, c, t, h, w
-        print("INSIDE")
-        x=self.backbone(x)
-        print(x.shape)
         
+        print("INSIDE")
+        x = x.expand(-1, 3, -1, -1, -1)
+        x = x.permute(0, 2, 1, 3, 4)
+        print(x.shape)
+        x=self.backbone(x)
+
+        print("AFTER",x.shape)
+        # x = self.stem(x)
+        # x = self.layer1(x)
+        # x = self.layer2(x)
+        # x = self.layer3(x)
+        # x = self.layer4(x)
+
+        if not self.return_features:
+            print("HERE 111111111111111")
+            x = self.avg_pool(x)
+            print("HERE 2222222222222222")
+            x = self.flatten(x)
+            x = F.normalize(x, p=2, dim=1)
 
         return x
 
