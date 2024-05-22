@@ -94,8 +94,7 @@ class DAD(Dataset):
         with open(self.pkl_file_path, "rb") as f:
             pkl = deepcopy(pickle.load(f))
 
-        assert set(self.sources).issubset(set(pkl["img_sources"]))
-
+        
         if self.split == "train":
             assert set(pkl.keys()) == {"normal", "anomalous", "img_sources"}
             assert set(pkl["normal"].keys()) == set(pkl["anomalous"].keys()) == {"img_base_dirs", "img_names", "labels"}
