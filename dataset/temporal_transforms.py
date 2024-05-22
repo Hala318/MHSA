@@ -32,7 +32,7 @@ class UniformDownsample(object):
         else:
             assert step is not None and isinstance(step, int) and step > 0
 
-        self.num_frames = num_frames
+        self.num_frames = 32
         self.step = step
         self.rng = np.random.default_rng()
 
